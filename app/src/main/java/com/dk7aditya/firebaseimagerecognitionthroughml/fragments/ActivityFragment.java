@@ -60,7 +60,7 @@ public class ActivityFragment extends Fragment implements ImageListRecyclerAdapt
         return view;
     }
     private void insertFakeImageNames(){
-mImageList.clear();
+        mImageList.clear();
         ImageList imageList = new ImageList();
         mImageRef.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
             @Override
