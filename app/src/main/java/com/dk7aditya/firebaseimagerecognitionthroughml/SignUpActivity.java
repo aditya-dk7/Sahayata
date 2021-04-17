@@ -11,12 +11,17 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dk7aditya.firebaseimagerecognitionthroughml.models.GroupList;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class SignUpActivity extends AppCompatActivity {
     private static final String TAG = "SignUpActivity";
     private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,6 +126,14 @@ public class SignUpActivity extends AppCompatActivity {
                         .addOnCompleteListener(this, task -> {
                             if(task.isSuccessful()){
                                 Log.d(TAG, "createUserWithEmail:success");
+                                mAuth = FirebaseAuth.getInstance();
+                                CollectionReference groupsRef = FirebaseFirestore.getInstance()
+                                        .collection("users");
+                                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                DocumentReference messageRef = db
+                                        .collection("users").document(mAuth.getUid());
+                                messageRef.collection("userGroupList").add(new GroupList("fdasfdasffda"));
+                             
                                 Intent homeActivity = new Intent(SignUpActivity.this, HomeActivity.class);
                                 homeActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 homeActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

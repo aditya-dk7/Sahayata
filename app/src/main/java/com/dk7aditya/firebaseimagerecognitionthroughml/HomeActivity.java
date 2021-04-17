@@ -67,14 +67,22 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.option_menu_item_1) {
-            FirebaseAuth.getInstance().signOut();
-            Intent intToMain = new Intent(HomeActivity.this, LoginActivity.class);
-            intToMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intToMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intToMain);
-            overridePendingTransition(0,0);
+        switch (item.getItemId()) {
+            case R.id.option_menu_item_1:
+                FirebaseAuth.getInstance().signOut();
+                Intent intToMain = new Intent(HomeActivity.this, LoginActivity.class);
+                intToMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intToMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intToMain);
+                overridePendingTransition(0,0);
+                return true;
+            case R.id.option_menu_item_2:
+                Intent intToNewGroup = new Intent(HomeActivity.this, GetAllUsersForGroupActivity.class);
+                startActivity(intToNewGroup);
+                overridePendingTransition(0,0);
+                return true;
+            default: return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
+       // return super.onOptionsItemSelected(item);
     }
 }
