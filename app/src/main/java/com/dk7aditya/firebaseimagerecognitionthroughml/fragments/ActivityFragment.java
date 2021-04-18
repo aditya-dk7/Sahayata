@@ -53,7 +53,7 @@ public class ActivityFragment extends Fragment implements ImageListRecyclerAdapt
         mStorage = FirebaseStorage.getInstance();
         mAuth = FirebaseAuth.getInstance();
         mStorageReference = mStorage.getReference();
-        mImageRef = mStorageReference.child(mAuth.getUid());
+        mImageRef = mStorageReference.child(mAuth.getCurrentUser().getEmail());
         //mImageList.clear();
         insertFakeImageNames();
         initRecyclerView();

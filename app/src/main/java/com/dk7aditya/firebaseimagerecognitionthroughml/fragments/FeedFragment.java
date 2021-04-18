@@ -28,7 +28,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FeedFragment extends Fragment implements FeedListRecyclerAdapter.OnFeedNameListener {
+public class
+FeedFragment extends Fragment implements FeedListRecyclerAdapter.OnFeedNameListener {
     private String API_KEY = "";
     private ArrayList <FeedList> mFeedList = new ArrayList<>();
     private FeedList mFeedListArray;

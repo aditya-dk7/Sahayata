@@ -3,6 +3,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -12,17 +13,28 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.dk7aditya.firebaseimagerecognitionthroughml.models.Group;
+import com.dk7aditya.firebaseimagerecognitionthroughml.models.GroupList;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+
 public class AddGroup extends AppCompatActivity {
     private EditText editTextGroupName;
     private EditText editTextDescription;
+    private ArrayList<String> mFinalUsers = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.AddGroup);
         setContentView(R.layout.activity_add_group);
+        ArrayList<String> listOfFinalUsers = getIntent().getStringArrayListExtra("finalListOfSelectedUsers");
+        mFinalUsers = listOfFinalUsers;
+        Log.e("listFinal", listOfFinalUsers.toString());
         editTextGroupName = findViewById(R.id.edit_text_group_name);
         editTextDescription = findViewById(R.id.edit_text_description);
 
@@ -54,6 +66,17 @@ public class AddGroup extends AppCompatActivity {
             return;
         }else{
             Toast.makeText(this,"Working for now",Toast.LENGTH_SHORT).show();
+
+            DocumentReference groupsRef = FirebaseFirestore.getInstance()
+                    .collection("Groups").document(group_name);
+            groupsRef.collection("groupMembers").add(new Group(group_name, description, mFinalUsers));
+            for(int i=0;i < mFinalUsers.size(); ++i){
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                DocumentReference messageRef = db
+                        .collection("users").document(mFinalUsers.get(i));
+                messageRef.collection("userGroupList").add(new GroupList(group_name));
+            }
+
             Intent intentToMain = new Intent(AddGroup.this, HomeActivity.class);
             intentToMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intentToMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

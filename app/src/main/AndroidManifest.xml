@@ -12,6 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FirebaseImageRecognitionThroughML">
+        <activity android:name=".DisplayGroupInfo"></activity>
         <activity android:name=".GetAllUsersForGroupActivity" />
         <activity android:name=".AddGroup" />
         <activity android:name=".DisplayPersonImage" />

@@ -14,9 +14,13 @@ import android.widget.Toast;
 import com.dk7aditya.firebaseimagerecognitionthroughml.models.GroupList;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
 
 public class SignUpActivity extends AppCompatActivity {
     private static final String TAG = "SignUpActivity";
@@ -127,13 +131,28 @@ public class SignUpActivity extends AppCompatActivity {
                             if(task.isSuccessful()){
                                 Log.d(TAG, "createUserWithEmail:success");
                                 mAuth = FirebaseAuth.getInstance();
+                                FirebaseUser getuser = mAuth.getCurrentUser();
+                                String email = getuser.getEmail();
+                                String uid = getuser.getUid();
+                                HashMap<Object,String> hashMap = new HashMap<>();
+                                hashMap.put("email", email);
+                                hashMap.put("uid",uid);
+                                hashMap.put("name", "");
+                                hashMap.put("phone","");
+                                hashMap.put("image", "");
+                                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                DatabaseReference reference_database = database.getReference("UserInformation");
+                                reference_database.child(uid).setValue(hashMap);
+
+
+/*
                                 CollectionReference groupsRef = FirebaseFirestore.getInstance()
                                         .collection("users");
                                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                                 DocumentReference messageRef = db
-                                        .collection("users").document(mAuth.getUid());
+                                        .collection("users").document(getuser.getEmail());
                                 messageRef.collection("userGroupList").add(new GroupList("fdasfdasffda"));
-                             
+  */
                                 Intent homeActivity = new Intent(SignUpActivity.this, HomeActivity.class);
                                 homeActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 homeActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

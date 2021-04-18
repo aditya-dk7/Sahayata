@@ -1,5 +1,6 @@
 package com.dk7aditya.firebaseimagerecognitionthroughml;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,15 +16,24 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.dk7aditya.firebaseimagerecognitionthroughml.adapters.FirebaseUserNameAdapter;
 import com.dk7aditya.firebaseimagerecognitionthroughml.models.FirebaseUserListItem;
+import com.dk7aditya.firebaseimagerecognitionthroughml.models.ModelUser;
 import com.dk7aditya.firebaseimagerecognitionthroughml.util.VerticalSpacingItemDecorator;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class GetAllUsersForGroupActivity extends AppCompatActivity implements FirebaseUserNameAdapter.OnUserListClickListener{
     private FirebaseUserNameAdapter mFirebaseUserNameAdapter;
     private static final String TAG = "GetAllUsersForGroupActivity";
+    private FirebaseUser fUSer;
     private RecyclerView mRecyclerViewList;
     private ArrayList<FirebaseUserListItem> mFirebaseUserListItem = new ArrayList<>();
     private FirebaseUserListItem mAddUserNameList;
@@ -37,18 +47,29 @@ public class GetAllUsersForGroupActivity extends AppCompatActivity implements Fi
         setUpRecyclerView();
     }
     private void fillExampleList() {
-        for(int i=0; i<5; ++i) {
-            mAddUserNameList = new FirebaseUserListItem();
-            mAddUserNameList.setText1(String.valueOf(i));
-            mFirebaseUserListItem.add(mAddUserNameList);
-            //mFirebaseUserNameAdapter.notifyDataSetChanged();
-        }
-        for(int i=6; i<11; ++i) {
-            mAddUserNameList = new FirebaseUserListItem();
-            mAddUserNameList.setText1(String.valueOf(i));
-            mFirebaseUserListItem.add(mAddUserNameList);
-            //mFirebaseUserNameAdapter.notifyDataSetChanged();
-        }
+        fUSer = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("UserInformation");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for(DataSnapshot ds: snapshot.getChildren()){
+                    ModelUser modelUser = ds.getValue(ModelUser.class);
+
+                    if(!modelUser.getUid().equals(fUSer.getUid())){
+                        mAddUserNameList = new FirebaseUserListItem();
+                        mAddUserNameList.setText1(String.valueOf(modelUser.getEmail()));
+                        mFirebaseUserListItem.add(mAddUserNameList);
+                    }
+                    mFirebaseUserNameAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.i("onCancelled", error.toString());
+            }
+        });
     }
     private void setUpRecyclerView() {
         LinearLayoutManager linearLayoutManagerGetUsers = new LinearLayoutManager(this);
@@ -95,11 +116,18 @@ public class GetAllUsersForGroupActivity extends AppCompatActivity implements Fi
     }
     public void getUsersToMakeGroup(){
         ArrayList<String> finalListOfSelectedUsers = mFirebaseUserNameAdapter.getListOfSelectedUsers();
-        Toast.makeText(this, finalListOfSelectedUsers.toString(),Toast.LENGTH_SHORT).show();
-        Intent addActivityIntent = new Intent(GetAllUsersForGroupActivity.this, AddGroup.class);
-        addActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        addActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(addActivityIntent);
+        if(finalListOfSelectedUsers.isEmpty()){
+            Toast.makeText(this,"You need to select atleast one person", Toast.LENGTH_SHORT).show();
+        }else{
+            finalListOfSelectedUsers.add(fUSer.getEmail());
+            //Toast.makeText(this, finalListOfSelectedUsers.toString(),Toast.LENGTH_SHORT).show();
+            Intent addActivityIntent = new Intent(GetAllUsersForGroupActivity.this, AddGroup.class);
+            addActivityIntent.putExtra("finalListOfSelectedUsers",finalListOfSelectedUsers);
+            addActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            addActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(addActivityIntent);
+        }
+
 
     }
     @Override
