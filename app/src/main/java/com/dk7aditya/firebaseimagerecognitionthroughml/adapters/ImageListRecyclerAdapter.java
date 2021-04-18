@@ -31,7 +31,7 @@ public class ImageListRecyclerAdapter extends RecyclerView.Adapter<ImageListRecy
     @Override
     public void onBindViewHolder(@NonNull ImageListRecyclerAdapter.ViewHolder holder, int position) {
         holder.timestamp.setText(mImageList.get(position).getTimestamp());
-        holder.title.setText(mImageList.get(position).getTitle());
+        holder.title.setText(mImageList.get(position).getTitle().substring(0,10));
     }
 
     @Override

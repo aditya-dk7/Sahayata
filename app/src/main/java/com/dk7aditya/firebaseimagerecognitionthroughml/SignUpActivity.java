@@ -143,16 +143,6 @@ public class SignUpActivity extends AppCompatActivity {
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                 DatabaseReference reference_database = database.getReference("UserInformation");
                                 reference_database.child(uid).setValue(hashMap);
-
-
-/*
-                                CollectionReference groupsRef = FirebaseFirestore.getInstance()
-                                        .collection("users");
-                                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                DocumentReference messageRef = db
-                                        .collection("users").document(getuser.getEmail());
-                                messageRef.collection("userGroupList").add(new GroupList("fdasfdasffda"));
-  */
                                 Intent homeActivity = new Intent(SignUpActivity.this, HomeActivity.class);
                                 homeActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 homeActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

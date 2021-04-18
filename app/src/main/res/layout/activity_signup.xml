@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="#293b97"
     tools:context=".SignUpActivity">
     <EditText
@@ -12,15 +13,13 @@
         android:background="@drawable/button_format"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginTop="150dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="100dp"
         android:ems="10"
         android:hint="email"
         android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@+id/passWord"
-        app:layout_constraintEnd_toEndOf="parent"
         android:padding="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+         />
 
     <EditText
         android:id="@+id/passWord"
@@ -33,10 +32,8 @@
         android:ems="10"
         android:hint="password"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/reEnterPassWord"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userEmail" />
+        android:layout_gravity="center"
+        />
 
     <EditText
         android:id="@+id/reEnterPassWord"
@@ -49,25 +46,19 @@
         android:backgroundTint="@color/white"
         android:background="@drawable/button_format"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/signUp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passWord" />
+        android:layout_gravity="center" />
 
     <Button
         android:id="@+id/signUp"
         android:layout_width="300dp"
-        android:layout_height="70dp"
+        android:layout_height="50dp"
         android:layout_marginTop="20dp"
         android:autoSizeMaxTextSize="20sp"
         android:autoSizeTextType="uniform"
         android:text="SIGN UP"
         android:background="@drawable/button_selector_test"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/loginPageText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/reEnterPassWord" />
+        android:layout_gravity="center" />
 
     <TextView
         android:id="@+id/loginPageText"
@@ -76,10 +67,7 @@
         android:layout_marginTop="20dp"
         android:text="Already Registered? Login Here"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/forgotPasswordActivityLink"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUp" />
+        android:layout_gravity="center" />
 
     <TextView
         android:id="@+id/forgotPasswordActivityLink"
@@ -89,8 +77,5 @@
         android:layout_marginBottom="300dp"
         android:text="Forgot Password? Click Here"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginPageText" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_gravity="center"/>
+</LinearLayout>

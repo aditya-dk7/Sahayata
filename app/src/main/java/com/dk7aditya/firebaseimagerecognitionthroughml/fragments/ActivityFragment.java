@@ -61,31 +61,19 @@ public class ActivityFragment extends Fragment implements ImageListRecyclerAdapt
     }
     private void insertFakeImageNames(){
         mImageList.clear();
-        ImageList imageList = new ImageList();
         mImageRef.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
             @Override
             public void onSuccess(ListResult listResult) {
-
                 for (StorageReference item : listResult.getItems()) {
-                    Log.d("Listing item",item.getName().toString());
+                    ImageList imageList = new ImageList();
                     imageList.setTitle(item.getName());
-
-                    item.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            imageList.setContent(uri.toString());
-                        }
-                    });
-
-                    imageList.setTimestamp("20:20");
+                    item.getDownloadUrl().addOnSuccessListener(uri -> imageList.setContent(uri.toString()));
+                    imageList.setTimestamp(item.getName().split(" ")[1].substring(0,5));
                     mImageList.add(imageList);
                     mImageNameListRecyclerAdapter.notifyDataSetChanged();
                 }
             }
         });
-
-
-
     }
     private void initRecyclerView(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -100,7 +88,7 @@ public class ActivityFragment extends Fragment implements ImageListRecyclerAdapt
     public void onImageNameClick(int position) {
         Log.d(TAG, "onImageNameClick: Position "+ position + " clicked.");
         Intent displayImageFromPosition = new Intent(getContext(), com.dk7aditya.firebaseimagerecognitionthroughml.DisplayPersonImage.class);
-        displayImageFromPosition.putExtra("TEMPERATURE", Integer.toString(position));
+        displayImageFromPosition.putExtra("TEMPERATURE", mImageList.get(position).getTitle().split(" ")[2]);
         displayImageFromPosition.putExtra("IMAGEURL",mImageList.get(position).getContent());
         startActivity(displayImageFromPosition);
     }

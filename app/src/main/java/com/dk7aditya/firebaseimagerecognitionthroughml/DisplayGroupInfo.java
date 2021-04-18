@@ -81,17 +81,10 @@ public class DisplayGroupInfo extends AppCompatActivity implements ImageListRecy
                         public void onSuccess(ListResult listResult) {
 
                             for (StorageReference item : listResult.getItems()) {
-                                Log.d("Listing item",item.getName().toString());
+                                ImageList imageList = new ImageList();
                                 imageList.setTitle(item.getName());
-
-                                item.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        imageList.setContent(uri.toString());
-                                    }
-                                });
-
-                                imageList.setTimestamp("20:20");
+                                item.getDownloadUrl().addOnSuccessListener(uri -> imageList.setContent(uri.toString()));
+                                imageList.setTimestamp(item.getName().split(" ")[1].substring(0,5));
                                 mImageList.add(imageList);
                                 mImageNameListRecyclerAdapter.notifyDataSetChanged();
                             }
@@ -114,7 +107,7 @@ public class DisplayGroupInfo extends AppCompatActivity implements ImageListRecy
     @Override
     public void onImageNameClick(int position) {
         Intent displayImageFromPosition = new Intent(this,DisplayPersonImage.class);
-        displayImageFromPosition.putExtra("TEMPERATURE", Integer.toString(position));
+        displayImageFromPosition.putExtra("TEMPERATURE", mImageList.get(position).getTitle().split(" ")[2]);
         displayImageFromPosition.putExtra("IMAGEURL",mImageList.get(position).getContent());
         startActivity(displayImageFromPosition);
     }

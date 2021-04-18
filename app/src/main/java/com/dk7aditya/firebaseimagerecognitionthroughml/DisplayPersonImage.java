@@ -19,7 +19,7 @@ public class DisplayPersonImage extends AppCompatActivity {
         ImageView image = findViewById(R.id.imageFaceRecognised);
         String temperatureSet = getIntent().getStringExtra("TEMPERATURE");
         String imageURL = getIntent().getStringExtra("IMAGEURL");
-        Toast.makeText(this, imageURL,Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, imageURL,Toast.LENGTH_SHORT).show();
         Glide.with(this)
                 .asBitmap()
                 .load(imageURL)
@@ -28,6 +28,6 @@ public class DisplayPersonImage extends AppCompatActivity {
         //Log.d("onCreate: ", temperatureSet);
         //Toast.makeText(DisplayPersonImage.this,temperatureSet,Toast.LENGTH_SHORT).show();
         TextView setTemperature = findViewById(R.id.setTemperature);
-        setTemperature.setText(temperatureSet);
+        setTemperature.setText("TEMPERATURE: " + temperatureSet + "°F");
     }
 }
