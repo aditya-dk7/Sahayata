@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                logIn.setEnabled(!s.toString().isEmpty() && !passWordForLogin.getText().toString().isEmpty());
+                logIn.setEnabled(!s.toString().isEmpty() && !userEmailForLogin.getText().toString().isEmpty());
             }
         });
 

@@ -82,7 +82,7 @@ public class SignUpActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(!s.toString().isEmpty() && !password.getText().toString().isEmpty() && !reEnterPassword.getText().toString().isEmpty()){
+                if(!s.toString().isEmpty() && !userEmail.getText().toString().isEmpty() && !reEnterPassword.getText().toString().isEmpty()){
                     signUp.setEnabled(true);
                 }else{
                     signUp.setEnabled(false);
@@ -103,7 +103,7 @@ public class SignUpActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(!s.toString().isEmpty() && !password.getText().toString().isEmpty() && !reEnterPassword.getText().toString().isEmpty()){
+                if(!s.toString().isEmpty() && !password.getText().toString().isEmpty() && !userEmail.getText().toString().isEmpty()){
                     signUp.setEnabled(true);
                 }else{
                     signUp.setEnabled(false);
