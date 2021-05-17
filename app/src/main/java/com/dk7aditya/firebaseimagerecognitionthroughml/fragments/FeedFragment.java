@@ -52,32 +52,37 @@ FeedFragment extends Fragment implements FeedListRecyclerAdapter.OnFeedNameListe
         mFeedList.clear();
         mFeedListArray = new FeedList();
         final APIInterface apiService = APIClient.getClient().create(APIInterface.class);
-        Call<ResponseModel> call = apiService.getLatestNews("in","covid",API_KEY);
-        call.enqueue(new Callback<ResponseModel>() {
-            @Override
-            public void onResponse(Call<ResponseModel>call, Response<ResponseModel> response) {
-                if(response.body().getStatus().equals("ok")) {
-                    List<Article> articleList = response.body().getArticles();
-                    if(articleList.size()>0) {
-                        for(int i=0; i<articleList.size(); ++i){
-                            mFeedListArray = new FeedList();
-                            Article articleModel = articleList.get(i);
-                            mFeedListArray.setImageNewsTitle(articleModel.getTitle());
-                            mFeedListArray.setImageNewsDescription(articleModel.getDescription());
-                            mFeedListArray.setImageNewsUrl(articleModel.getUrlToImage());
-                            Log.d("Position: " + i, mFeedListArray.toString());
-                            mFeedList.add(mFeedListArray);
-                            mFeedListRecyclerAdapter.notifyDataSetChanged();
-                        }
+        if (API_KEY.isEmpty()){
+            //Do Nothing.
+        }else {
+            Call<ResponseModel> call = apiService.getLatestNews("in", "covid", API_KEY);
+            call.enqueue(new Callback<ResponseModel>() {
+                @Override
+                public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+                    if (response.body().getStatus().equals("ok")) {
+                        List<Article> articleList = response.body().getArticles();
+                        if (articleList.size() > 0) {
+                            for (int i = 0; i < articleList.size(); ++i) {
+                                mFeedListArray = new FeedList();
+                                Article articleModel = articleList.get(i);
+                                mFeedListArray.setImageNewsTitle(articleModel.getTitle());
+                                mFeedListArray.setImageNewsDescription(articleModel.getDescription());
+                                mFeedListArray.setImageNewsUrl(articleModel.getUrlToImage());
+                                Log.d("Position: " + i, mFeedListArray.toString());
+                                mFeedList.add(mFeedListArray);
+                                mFeedListRecyclerAdapter.notifyDataSetChanged();
+                            }
 
+                        }
                     }
                 }
-            }
-            @Override
-            public void onFailure(Call<ResponseModel>call, Throwable t) {
-                Log.d("onFailure", t.getMessage());
-            }
-        });
+
+                @Override
+                public void onFailure(Call<ResponseModel> call, Throwable t) {
+                    Log.d("onFailure", t.getMessage());
+                }
+            });
+        }
     }
     private void initFeedRecyclerView(){
         LinearLayoutManager linearLayoutManagerFeed = new LinearLayoutManager(getContext());
