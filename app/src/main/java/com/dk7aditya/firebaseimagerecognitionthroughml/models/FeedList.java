@@ -4,14 +4,21 @@ public class FeedList {
     private String imageNewsUrl;
     private String imageNewsTitle;
     private String imageNewsDescription;
+    private String newsUrl;
 
-    public FeedList(String imageNewsUrl, String imageNewsTitle, String imageNewsDescription) {
+    public FeedList(String imageNewsUrl, String imageNewsTitle, String imageNewsDescription, String newsUrl) {
         this.imageNewsUrl = imageNewsUrl;
         this.imageNewsTitle = imageNewsTitle;
         this.imageNewsDescription = imageNewsDescription;
+        this.newsUrl = newsUrl;
     }
     public FeedList(){
 
+    }
+    public String getNewsUrl(){return newsUrl;}
+
+    public void setNewsUrl(String newsUrl) {
+        this.newsUrl = newsUrl;
     }
 
     public String getImageNewsUrl() {

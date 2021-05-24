@@ -1,5 +1,6 @@
 package com.dk7aditya.firebaseimagerecognitionthroughml.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.dk7aditya.firebaseimagerecognitionthroughml.APIClient;
 import com.dk7aditya.firebaseimagerecognitionthroughml.APIInterface;
 import com.dk7aditya.firebaseimagerecognitionthroughml.R;
+import com.dk7aditya.firebaseimagerecognitionthroughml.ViewNewsSelected;
 import com.dk7aditya.firebaseimagerecognitionthroughml.adapters.FeedListRecyclerAdapter;
 import com.dk7aditya.firebaseimagerecognitionthroughml.models.Article;
 import com.dk7aditya.firebaseimagerecognitionthroughml.models.FeedList;
@@ -68,6 +70,7 @@ FeedFragment extends Fragment implements FeedListRecyclerAdapter.OnFeedNameListe
                                 mFeedListArray.setImageNewsTitle(articleModel.getTitle());
                                 mFeedListArray.setImageNewsDescription(articleModel.getDescription());
                                 mFeedListArray.setImageNewsUrl(articleModel.getUrlToImage());
+                                mFeedListArray.setNewsUrl(articleModel.getUrl());
                                 Log.d("Position: " + i, mFeedListArray.toString());
                                 mFeedList.add(mFeedListArray);
                                 mFeedListRecyclerAdapter.notifyDataSetChanged();
@@ -87,7 +90,7 @@ FeedFragment extends Fragment implements FeedListRecyclerAdapter.OnFeedNameListe
     private void initFeedRecyclerView(){
         LinearLayoutManager linearLayoutManagerFeed = new LinearLayoutManager(getContext());
         mRecyclerViewFeed.setLayoutManager(linearLayoutManagerFeed);
-        VerticalSpacingItemDecorator itemDecoratorFeed = new VerticalSpacingItemDecorator(10);
+        VerticalSpacingItemDecorator itemDecoratorFeed = new VerticalSpacingItemDecorator(15);
         mRecyclerViewFeed.addItemDecoration(itemDecoratorFeed);
         mFeedListRecyclerAdapter = new FeedListRecyclerAdapter (mFeedList, FeedFragment.this);
         mRecyclerViewFeed.setAdapter(mFeedListRecyclerAdapter);
@@ -95,6 +98,9 @@ FeedFragment extends Fragment implements FeedListRecyclerAdapter.OnFeedNameListe
 
     @Override
     public void onFeedNameClick(int position) {
-        Toast.makeText(getContext(), "Position: " + (position+1), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "Position: " + (position+1), Toast.LENGTH_SHORT).show();
+        Intent goToViewNews = new Intent(getContext(), ViewNewsSelected.class);
+        goToViewNews.putExtra("NEWSURL", mFeedList.get(position).getNewsUrl());
+        startActivity(goToViewNews);
     }
 }
