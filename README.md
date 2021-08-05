@@ -25,4 +25,8 @@ Feel Free to clone and extend the project.
 All the images used in the project are for demonstration purposes only. Please use at your own risk in production.
 <br>DISCLAIMER: The developers of this repository are not responsible for any copyright claim for the images used in the project in case of extension.
 
+# AUTHORS
+Naman Khandelwal <a href="https://github.com/naman200">naman200</a>
+
+
 
